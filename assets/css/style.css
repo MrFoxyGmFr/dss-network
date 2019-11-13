@@ -1,0 +1,85 @@
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css);
+body {
+	font-family: 'Dosis', sans-serif;
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+{
+	box-sizing: border-box;
+}
+.logo_box {
+	width: 300px;
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.logo_box h1 {
+	text-align: center;
+	font-size: 35px;
+}
+.textbox {
+	width: 100%;
+	overflow: hidden;
+	font-size: 20px;
+	padding: 8px 0;
+	margin: 8px 0;
+	border-bottom: 2px solid;
+}
+
+.textbox input {
+	border: none;
+	outline: none;
+	background: none;
+	font-size: 15px;
+	font-family: 'Dosis', sans-serif; 
+}
+
+.button {
+	width: 100%;
+	font-size: 15px;
+	background: none;
+	border: 2px solid #000000;
+	font-family: 'Dosis', sans-serif;
+	padding: 5px;
+}
+
+.logo_toptext h1{
+	font-size: 45px;
+}
+
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: auto;
+}
+
+.header {
+	width: 100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+.header_inner {
+	display: flex;
+	justify-content: space-between; 
+}
+.nav_link {
+	font-size: 25px;
+	color: #000000;
+	display: inline-block;
+	visibility: top;
+	margin: 30px;
+	text-decoration: none;
+	text-shadow: .1s linear;
+}
+
+.nav_link:hover {
+	color:#575757;
+	border-bottom: 4px solid #000000;
+}
+
