@@ -123,3 +123,40 @@ tr:last-child {
 .name_c {
 	width: 400px;
 }
+
+.add_user ul {
+	position: absolute;
+	top: 20%;
+	left: 35%;
+	font-size: 40px;
+	list-style-type: none;
+}
+.add_user li {
+	text-align: center;
+	margin-top: 0;
+}
+
+.bttn {
+	font-size: 40px;
+	text-align: center;
+	background: none;
+	border: none;
+	border-bottom: 4px dotted;
+	color: black;
+	font-family: 'Dosis', sans-serif;
+}
+
+.bttn2 {
+	background: none;
+	border: none;
+	width: 100%;
+	font-size: 40px;
+	color: black;
+	font-family: 'Dosis', sans-serif;
+	margin-top: 100px;
+}
+.addingPC {
+	margin-top: 40px;
+	border: none;
+	border-bottom: 4px dotted;
+}
