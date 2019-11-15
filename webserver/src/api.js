@@ -31,11 +31,11 @@ routes.post("/connect/:code", async (req, resp) => {
 });
 
 routes.use("/config/:uuid", async (req, resp) => {
-    let user = await utils.allClients().find(user => user.uuid === req.body.uuid);
+    let user = (await utils.allClients()).find(user => user.uuid === req.params.uuid);
     return resp.json({
         status: user.status === "online",
         setting: user.config
-    }).config;
+    });
 });
 
 module.exports = routes;
