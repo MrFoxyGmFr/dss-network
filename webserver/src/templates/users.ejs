@@ -35,7 +35,7 @@
 			<tr>
 				<td><%= user.name %></td>
 				<td class="<%= user.status %>"><%= user.status %></td>
-				<td><a href="rtmp://<%= config.rtmp.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a></td>
+				<td><a href="rtmp://<%= config.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a></td>
 				<td><a href="/user/<%= user.uuid %>">Click to Change!</a></td>
 			</tr>
 			<% }); %>

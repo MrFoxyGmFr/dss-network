@@ -21,7 +21,10 @@ routes.post("/connect/:code", async (req, resp) => {
 
     return resp.json({
         uuid: user.uuid,
-        ...user.config
+        url: config.url,
+        fps: user.config.fps,
+        rtmp_port: config.rtmp.port,
+        video_size: [user.config.width, user.config.height]
     });
 });
 
