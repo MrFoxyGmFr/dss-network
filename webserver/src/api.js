@@ -1,4 +1,5 @@
 const utils = require("./utils");
+const config = require("../conf/config");
 const Router = require("express").Router;
 
 const routes = Router();
@@ -14,19 +15,27 @@ routes.post("/connect/:code", async (req, resp) => {
 
     let uuid = user.uuid;
     user.uuid = user.uuid.split(":")[0];
-    user.config.height = req.body.height;
-    user.config.width = req.body.width;
+    user.config = {
+        fps: user.config.fps,
+        video_size: [req.body.width, req.body.height]
+    };
 
     await utils.editClient(uuid, user);
 
     return resp.json({
         uuid: user.uuid,
         url: config.url,
-        fps: user.config.fps,
         rtmp_port: config.rtmp.port,
-        video_size: [user.config.width, user.config.height]
+        ...user.config
     });
 });
 
+routes.use("/config/:uuid", async (req, resp) => {
+    let user = await utils.allClients().find(user => user.uuid === req.body.uuid);
+    return resp.json({
+        status: user.status === "online",
+        setting: user.config
+    }).config;
+});
 
 module.exports = routes;
