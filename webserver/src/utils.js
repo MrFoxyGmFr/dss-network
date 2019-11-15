@@ -19,6 +19,13 @@ const writeJSON = (name, data) => new Promise((resolve) => {
 
 const allClients = async () => await readJSON("clients") || [];
 
+const writeClients = async (users) => {
+    let activated = users.filter(user => user.uuid.split(":")[1] == null).sort((a, b) => a.name > b.name);
+    let not_activated = users.filter(user => user.uuid.split(":")[1] != null).sort((a, b) => a.name > b.name);
+
+    await writeJSON("clients", activated.concat(not_activated));
+};
+
 const createClient = async (name) => {
     let users = await allClients();
     let code = Math.floor(Math.random() * 1000000);
@@ -32,7 +39,7 @@ const createClient = async (name) => {
         }
     });
 
-    writeJSON("clients", users);
+    await writeClients(users);
     return code;
 };
 
@@ -42,7 +49,7 @@ const editClient = async (uuid, new_data) => {
     users = users.filter(user => user.uuid !== uuid);
     users.push(new_data);
 
-    writeJSON("clients", users);
+    await writeClients(users);
 };
 
 const deleteClient = async (uuid) => {
@@ -50,9 +57,7 @@ const deleteClient = async (uuid) => {
 
     users = users.filter(user => user.uuid !== uuid);
 
-    writeJSON("users", users);
+    await writeClients(users);
 };
-
-
 
 module.exports = { createClient, allClients, editClient, deleteClient };
