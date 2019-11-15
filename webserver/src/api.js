@@ -32,6 +32,10 @@ routes.post("/connect/:code", async (req, resp) => {
 
 routes.use("/config/:uuid", async (req, resp) => {
     let user = (await utils.allClients()).find(user => user.uuid === req.params.uuid);
+
+    user.approved = Date.now();
+    await utils.editClient(user.uuid, user);
+
     return resp.json({
         status: user.status === "online",
         setting: user.config
