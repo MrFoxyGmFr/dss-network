@@ -34,8 +34,14 @@
 			%>
 			<tr>
 				<td><%= user.name %></td>
-				<td class="<%= user.status %>"><%= user.status %></td>
-				<td><a href="rtmp://<%= config.rtmp.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a></td>
+				<td class="<%= user.status %>"><%= user.status.charAt(0).toUpperCase() + user.status.slice(1) %></td>
+				<td>
+					<% if (user.status === "online") { %>
+						<a href="rtmp://<%= config.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a>
+					<% } else { %>
+							<a href="/user/<%= user.uuid %>/toggle">Toggle State!</a>
+					<% } %>
+				</td>
 				<td><a href="/user/<%= user.uuid %>">Click to Change!</a></td>
 			</tr>
 			<% }); %>

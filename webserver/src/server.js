@@ -51,8 +51,35 @@ server.post("/user/:uuid", async (req, resp) => {
         return resp.redirect("/users");
     }
 
+    user.config.fps = req.body.fps;
+    user.name = req.body.name;
+
+    await utils.editClient(uuid, user);
+
     resp.render(__dirname + "/templates/edit_user.ejs", { user });
 });
+
+server.use("/user/:uuid/delete", async (req, resp) => {
+    await utils.deleteClient(req.params.uuid);
+    resp.redirect("/users");
+});
+
+server.use("/user/:uuid/toggle", async (req, resp) => {
+    let uuid = req.params.uuid;
+    let users = await utils.allClients();
+    let user = users.find(user => user.uuid === uuid);
+
+    if (user == null) {
+        return resp.redirect("/users");
+    }
+
+    user.status = user.status === "online" ? "offline" : "online";
+
+    await utils.editClient(uuid, user);
+
+    resp.redirect(`/users`);
+});
+
 
 server.use("/", (req, resp, next) => {
     if (req.url === "/") {
