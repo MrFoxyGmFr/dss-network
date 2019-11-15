@@ -126,24 +126,24 @@ tr:last-child {
 
 .add_user ul {
 	position: absolute;
-	top: 20%;
-	left: 35%;
+
 	font-size: 40px;
 	list-style-type: none;
 }
 .add_user li {
 	text-align: center;
 	margin-top: 0;
+	transform:translate(40%,200%);
 }
 
 .bttn {
 	font-size: 40px;
-	text-align: center;
 	background: none;
 	border: none;
 	border-bottom: 4px dotted;
 	color: black;
 	font-family: 'Dosis', sans-serif;
+	width:100%;
 }
 
 .bttn2 {
@@ -159,4 +159,46 @@ tr:last-child {
 	margin-top: 40px;
 	border: none;
 	border-bottom: 4px dotted;
+}
+.stopstart {
+	font-size: 40px;
+	position: absolute;
+	left: 25%;
+	top: 20%;
+	border-spacing: 20px;
+}
+.stopstart td {
+	text-align: center;
+	padding: 0;
+	margin: 20px;
+}
+.stopstart th {
+	width: 300px;
+	transition: .2s;
+}
+
+.bttn3 {
+	text-align: center;
+	font-size: 40px;
+	background: none;
+	border: none;
+	color: black;
+	font-family: 'Dosis', sans-serif;
+}
+.Dotted {
+	border-bottom: 4px dotted;
+}
+
+.bttn4 {
+	text-align: center;
+	font-size: 40px;
+	background: none;
+	border: none;
+	color: black;
+	font-family: 'Dosis', sans-serif;
+	max-width: 600px;
+	width: 40%;
+	position: absolute;
+	top: 55%;
+	left: 35%;
 }
