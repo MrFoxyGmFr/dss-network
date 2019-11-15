@@ -2,26 +2,28 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="dss-network/assets/css/style.css">
+	<link rel="stylesheet" href="/css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Dosis:700&display=swap" rel="stylesheet">
 	<title>DSS console</title>
 </head>
 <body>
 	<div class="logo_box">
-		<div class="logo_toptext">
-			<h1>DSS Console <i class="far fa-window-restore"></i></h1>
-		</div>
-		<h1>Login</h1>
-		<div class="textbox">
-			<i class="fas fa-user"></i>
-			<input type="text" placeholder="Username" class="inputs">
-		</div>
+		<form action="/login" method="POST">
+			<div class="logo_toptext">
+				<h1>DSS Console <i class="far fa-window-restore"></i></h1>
+			</div>
+			<h1>Login</h1>
+			<div class="textbox">
+				<i class="fas fa-user"></i>
+				<input name="login" type="text" placeholder="Username" class="inputs">
+			</div>
 
-		<div class="textbox">
-			<i class="fas fa-lock"></i>
-			<input type="password" placeholder="Password" class="inputs">
-		</div>
-		<input type="button" class="button" value="Sign in">
+			<div class="textbox">
+				<i class="fas fa-lock"></i>
+				<input name="password" type="password" placeholder="Password" class="inputs">
+			</div>
+			<input type="submit" class="button" value="Sign in">
+		</form>
 	</div>
 </body>
 </html>

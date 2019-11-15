@@ -6,5 +6,6 @@
   "rtmp": {
     "port": "1935",
     "application": "live"
-  }
+  },
+  "jwt_secret": "secret_is_very_secret"
 }

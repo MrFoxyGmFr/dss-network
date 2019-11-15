@@ -60,4 +60,10 @@ const deleteClient = async (uuid) => {
     await writeClients(users);
 };
 
-module.exports = { createClient, allClients, editClient, deleteClient };
+const loginAsAdmin = async (login, password) => {
+    let admins = await readJSON("admins") || [];
+
+    return admins.filter(admin => admin.login === login && admin.password === password).length !== 0;
+};
+
+module.exports = { createClient, allClients, editClient, deleteClient, loginAsAdmin };
