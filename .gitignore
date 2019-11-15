@@ -1,4 +1,4 @@
 .idea
 package-lock.json
 node_modules
-conf/*.json
+webserver/conf/*.json
