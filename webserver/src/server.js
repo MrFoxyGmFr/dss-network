@@ -51,7 +51,17 @@ server.post("/user/:uuid", async (req, resp) => {
         return resp.redirect("/users");
     }
 
+    user.config.fps = req.body.fps;
+    user.name = req.body.name;
+
+    await utils.editClient(uuid, user);
+
     resp.render(__dirname + "/templates/edit_user.ejs", { user });
+});
+
+server.use("/user/:uuid/delete", async (req, resp) => {
+    await utils.deleteClient(req.params.uuid);
+    resp.redirect("/users");
 });
 
 server.use("/", (req, resp, next) => {

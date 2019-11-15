@@ -15,10 +15,9 @@
             <div class="add_user">
                 <table class="stopstart">
                     <tr>
-                        <th><a class="bttn3" href="/user/<%= user.uuid %>/poweroff">Turn Off<i class="fas fa-power-off"></i></a></th>
-                        <th><input type="submit" class="bttn3" name="action" value="Restart"><i class="fas fa-sync-alt"></i></th>
-                        <th><input type="submit" class="bttn3" name="action" value="Delete">
-                            <i class="fas fa-trash-alt"></i></th>
+                        <th><a class="bttn3" href="/user/<%= user.uuid %>/toggle">Turn Off <i class="fas fa-power-off"></i></a></th>
+                        <th></th>
+                        <th><a class="bttn3" href="/user/<%= user.uuid %>/delete">Delete <i class="fas fa-trash-alt"></i></a></th>
                     </tr>
                     <tr>
                         <td>Name:</td>
@@ -33,7 +32,7 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" name="action" class="bttn4" value="Save!">
+                <input type="submit" class="bttn4" value="Save!">
             </div>
         </form>
     </div>
