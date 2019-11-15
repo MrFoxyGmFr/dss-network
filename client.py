@@ -19,6 +19,7 @@ def get_config() -> dict:
         with open(config_file_path, 'r') as file:
             config = json.load(file)
     except FileNotFoundError:
+        raise FileNotFoundError
         config = {"fps": 30, "url": '10.91.89.241', "rtmp_port": 1935, "video_size": (800, 600),
                   "uuid": str(uuid.uuid4()), "last_update": None}
         set_config(config)
