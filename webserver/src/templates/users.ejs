@@ -36,13 +36,17 @@
 			%>
 			<tr>
 				<td><%= user.name %></td>
-				<td class="<%= user.approved && Date.now() > user.approved + 60000 ? "offline" : "online" %>">
-					<%= user.approved && Date.now() > user.approved + 60000 ? "Offline" : "Online" %>
+				<td class="<%= !user.approved || Date.now() > user.approved + 60000 ? "offline" : "online" %>">
+					<%= !user.approved || Date.now() > user.approved + 60000 ? "Offline" : "Online" %>
 				</td>
 				<td class="<%= user.status %>"><%= user.status.charAt(0).toUpperCase() + user.status.slice(1).replace("line", "") %></td>
-				<td>
+                <td>
 					<% if (user.status === "online") { %>
-						<a href="rtmp://<%= config.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a>
+                        <% if (!user.approved || Date.now() > user.approved + 60000) { %>
+                            Host offline!
+                        <% } else { %>
+                            <a href="rtmp://<%= config.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a>
+                        <% } %>
 					<% } else { %>
 							<a href="/user/<%= user.uuid %>/toggle">Toggle State!</a>
 					<% } %>
