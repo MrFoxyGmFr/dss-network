@@ -1,0 +1,10 @@
+{
+  "express": {
+    "port": 9999
+  },
+  "rtmp": {
+    "url": "localhost",
+    "port": "1935",
+    "application": "live"
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Dosis:700&display=swap" rel="stylesheet">
+	<title>DSS console</title>
+</head>
+
+<body>
+	<%- include('navbar') %>
+
+	<div class="container">
+		<table class="usersList">
+			<tr>
+				<th class="name_c">Name</th>
+				<th>Status</th>
+				<th>Spy Viewer</th>
+				<th>Change Settings</th>
+			</tr>
+			<%
+				users.forEach(user => {
+					if (user.uuid.split(":")[1] != null) {
+			%>
+			<tr>
+				<td><%= user.name %></td>
+				<td>Client Not Connected</td>
+				<td>Code: <%= user.uuid.split(":")[1] %></td>
+				<td><a href="/user/<%= user.uuid %>/delete">Delete</a></td>
+			</tr>
+			<%
+						return;
+					}
+			%>
+			<tr>
+				<td><%= user.name %></td>
+				<td class="<%= user.status %>"><%= user.status %></td>
+				<td><a href="rtmp://<%= config.rtmp.url %>:<%= config.rtmp.port %>/<%= config.rtmp.application %>/<%= user.uuid %>">Click to Spy!</a></td>
+				<td><a href="/user/<%= user.uuid %>">Click to Change!</a></td>
+			</tr>
+			<% }); %>
+		</table>
+	</div>
+
+</body>
+</html>

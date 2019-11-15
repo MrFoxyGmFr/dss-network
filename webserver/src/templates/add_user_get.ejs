@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Dosis:700&display=swap" rel="stylesheet">
+	<title>DSS console</title>
+</head>
+
+<body>
+	<%- include('navbar') %>
+
+    <div class="container">
+		<form action="/user/add" method="POST">
+			<div class="add_user">
+				<ul>
+					<li>Enter Computer name:</li>
+					<li>
+						<input class="bttn" name="name" type="text" placeholder="Name">
+					</li>
+					<li>
+						<input class="bttn2" type="submit" value="Click to Add PC!">
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

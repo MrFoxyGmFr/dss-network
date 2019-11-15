@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Dosis:700&display=swap" rel="stylesheet">
+	<title>DSS console</title>
+</head>
+
+<body>
+	<%- include('navbar') %>
+
+    <div class="container">
+		<div class="add_user">
+			<ul>
+				<li>Computer name:</li>
+				<li>
+					<p> <%= name %></p>
+				</li>
+				<br/>
+	            <li>Connection Code:</li>
+	            <li>
+					<p> <%= code %> </p>
+	            </li>
+	        </ul>
+		</div>
+	</div>
+</body>
+</html>
