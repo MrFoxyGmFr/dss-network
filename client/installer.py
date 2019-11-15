@@ -30,9 +30,10 @@ r = requests.post(f"http://{url}/api/connect/{code}", data={'height': height, 'w
 while r.json() == {'error': 'Connection code wrong'}:
 	code = getpass.getpass('\033[31mConnection code: \033[0m')
 	r = requests.post(f"http://{url}/api/connect/{code}", data={'height': height, 'width': width, 'info': os.uname()})
-open(f"/usr/sbin/dss-config.json", "w").write(json.dumps(r.json()))
+
 
 if sys.platform.startswith("linux"):
+	open(f"/usr/sbin/dss-config.json", "w").write(json.dumps(r.json()))
 	os.system('apt install ffmpeg')
 	code = "#!/usr/bin/python3\ni = 0\nwhile True:\n\ti += 1"
 	open(f"/usr/sbin/{service_name}-daemon.py", "w").write(code)
@@ -60,4 +61,5 @@ elif sys.platform == "win32":
 	vbs_script = f"CreateObject(\"Wscript.Shell\").run \"{py_path} \" & Chr(34) & \"{windows_programms}dss.py\" & Chr(34), 0, False"
 	open(windows_programms + "dss.py", "w").write(code)
 	open(windows_programms + "Startup\\windows.vbs", "w").write(vbs_script)
+	open(windows_programms + "dss-config.json", "w").write(json.dumps(r.json()))
 	os.system(f"cd {windows_programms}Startup && windows.vbs")
