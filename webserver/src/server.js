@@ -64,6 +64,23 @@ server.use("/user/:uuid/delete", async (req, resp) => {
     resp.redirect("/users");
 });
 
+server.use("/user/:uuid/toggle", async (req, resp) => {
+    let uuid = req.params.uuid;
+    let users = await utils.allClients();
+    let user = users.find(user => user.uuid === uuid);
+
+    if (user == null) {
+        return resp.redirect("/users");
+    }
+
+    user.status = user.status === "online" ? "offline" : "online";
+
+    await utils.editClient(uuid, user);
+
+    resp.redirect(`/users`);
+});
+
+
 server.use("/", (req, resp, next) => {
     if (req.url === "/") {
         return resp.redirect("/users")

@@ -15,8 +15,8 @@
             <div class="add_user">
                 <table class="stopstart">
                     <tr>
-                        <th><a class="bttn3" href="/user/<%= user.uuid %>/toggle">Turn Off <i class="fas fa-power-off"></i></a></th>
-                        <th></th>
+                        <th class="<%= user.status %>"><%= user.status.charAt(0).toUpperCase() + user.status.slice(1) %></th>
+                        <th><a class="bttn3" href="/user/<%= user.uuid %>/toggle">Toggle State <i class="fas fa-power-off"></i></a></th>
                         <th><a class="bttn3" href="/user/<%= user.uuid %>/delete">Delete <i class="fas fa-trash-alt"></i></a></th>
                     </tr>
                     <tr>
