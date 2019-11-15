@@ -131,7 +131,7 @@ tr:last-child {
 }
 
 .name_c {
-    width: 400px;
+    width: 300px;
 }
 
 .add_user {
@@ -181,18 +181,19 @@ p {
     margin: 0;
 }
 
-.online {
-    color: green;
-}
-
-.offline {
-    color: red;
-}
-
 a {
     color: black;
     text-decoration: none;
 }
+
+.online {
+    color: green !important;
+}
+
+.offline {
+    color: red !important;
+}
+
 
 .stopstart {
     font-size: 40px;

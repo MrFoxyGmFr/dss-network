@@ -14,7 +14,8 @@
 		<table class="usersList">
 			<tr>
 				<th class="name_c">Name</th>
-				<th>Status</th>
+				<th>PC Status</th>
+				<th>Stream Status</th>
 				<th>Spy Viewer</th>
 				<th>Change Settings</th>
 			</tr>
@@ -24,7 +25,8 @@
 			%>
 			<tr>
 				<td><%= user.name %></td>
-				<td>Client Not Connected</td>
+				<td>Not Connected</td>
+				<td>Not Connected</td>
 				<td>Code: <%= user.uuid.split(":")[1] %></td>
 				<td><a href="/user/<%= user.uuid %>/delete">Delete</a></td>
 			</tr>
@@ -34,6 +36,9 @@
 			%>
 			<tr>
 				<td><%= user.name %></td>
+				<td class="<%= user.approved && Date.now() > user.approved + 60000 ? "offline" : "online" %>">
+					<%= user.approved && Date.now() > user.approved + 60000 ? "Offline" : "Online" %>
+				</td>
 				<td class="<%= user.status %>"><%= user.status.charAt(0).toUpperCase() + user.status.slice(1) %></td>
 				<td>
 					<% if (user.status === "online") { %>

@@ -15,8 +15,10 @@
             <div class="add_user">
                 <table class="stopstart">
                     <tr>
-                        <th class="<%= user.status %>"><%= user.status.charAt(0).toUpperCase() + user.status.slice(1) %></th>
-                        <th><a class="bttn3" href="/user/<%= user.uuid %>/toggle">Toggle State <i class="fas fa-power-off"></i></a></th>
+                        <th class="<%= user.approved && Date.now() > user.approved + 60000 ? "offline" : "online" %>">
+                            <%= user.approved && Date.now() > user.approved + 60000 ? "Offline" : "Online" %>
+                        </th>
+                        <th><a class="bttn3 <%= user.status %>" href="/user/<%= user.uuid %>/toggle">Toggle State <i class="fas fa-power-off <%= user.status %>"></i></a></th>
                         <th><a class="bttn3" href="/user/<%= user.uuid %>/delete">Delete <i class="fas fa-trash-alt"></i></a></th>
                     </tr>
                     <tr>
