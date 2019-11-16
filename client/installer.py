@@ -13,7 +13,6 @@ from zipfile import ZipFile
 import json
 
 service_name = "dss"
-code = requests.get('https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/client.py').text
 
 
 if sys.platform.startswith("linux"):
@@ -31,6 +30,7 @@ while r.json() == {'error': 'Connection code wrong'}:
 	code = getpass.getpass('\033[31mConnection code: \033[0m')
 	r = requests.post(f"http://{url}/api/connect/{code}", data={'height': height, 'width': width, 'info': os.uname()})
 
+code = requests.get('https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/client.py').text
 
 if sys.platform.startswith("linux"):
 	open(f"/usr/sbin/dss-config.json", "w").write(json.dumps(r.json()))
