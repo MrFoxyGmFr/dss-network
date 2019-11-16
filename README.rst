@@ -6,7 +6,7 @@ dss - Desktop Spy Streaming Network
 Client Installation
 ---------------------
 
-You can download the latest client by clicking `here <https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/installer.py>`_.
+You can download the latest client installation by clicking `here <https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/installer.py>`_.
 
 Server Installation
 --------------------
