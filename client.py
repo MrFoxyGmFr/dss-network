@@ -30,7 +30,6 @@ def edit_config(name, value):
     global local_config
     conf = get_config()
     if conf[name] != value:
-        print("TTTTTTTTTTTTTTTt", conf[name], value)
         local_config['status'] = True
     conf[name] = value
     set_config(conf)
@@ -106,27 +105,15 @@ def gen_command_ffmpeg(uuid, video_size=(800, 600), fps=30, url='10.91.89.241', 
 
 def start_ffmpeg():
     global CONFIG, local_config
-    # if local_config['status'] is True and local_config.get('ffmpeg_proc', None) is None:
-    #     print('ffmpeg start')
-    #     _ = local_config.get('ffmpeg_proc', None)
-    #     CONFIG = get_config()
-    #     ffmpeg = gen_command_ffmpeg(**CONFIG)
-    #     _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
-    #     print('pid:', _.pid)
-    #     local_config['ffmpeg_proc'] = _
-    #     return _
     if local_config.get('ffmpeg_proc', None) is None:
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        print('AAAAAAAAAAA', local_config.get('ffmpeg_proc', None) is None)
         print('ffmpeg start')
         _ = local_config.get('ffmpeg_proc', None)
         CONFIG = get_config()
         ffmpeg = gen_command_ffmpeg(**CONFIG)
         _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
-        print('pid:', _.pid)
         local_config['ffmpeg_proc'] = _
-        print('VBBBBBBBBBBB', local_config.get('ffmpeg_proc', None) is None)
         return _
+
 
 def stop_ffmpeg():
     print('may_stop')
@@ -135,7 +122,7 @@ def stop_ffmpeg():
     if _ is not None:
         print(11111)
         try:
-            #_.kill()
+            # _.kill()
             _ = subprocess.run(['ps -a | grep ffmpeg | egrep "^ [0-9]{1,5}" -o'], shell=True, stdout=subprocess.PIPE)
             _ = _.stdout.decode('utf-8').replace(' ', '').split('\n')
             for i in _:
@@ -168,7 +155,6 @@ def eval_command(coms: dict):
                 _ = local_config.get('ffmpeg_proc', None)
                 if _ is None:
                     print('start 1')
-                    # stop_ffmpeg()
                     local_config['ffmpeg_proc'] = start_ffmpeg()
 
             elif value is False:
@@ -192,6 +178,3 @@ while True:
         timers.check()
     except requests.exceptions.ConnectionError:
         pass
-
-# ans = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
-# ans.kill()lll
