@@ -4,6 +4,7 @@ import sys
 import uuid
 import json
 import time
+from contextlib import contextmanager
 
 config_file_path = './dss-config.json'
 local_config = {}
@@ -22,7 +23,6 @@ def get_config() -> dict:
         raise FileNotFoundError
         config = {"fps": 30, "url": '10.91.89.241', "rtmp_port": 1935, "video_size": (800, 600),
                   "uuid": str(uuid.uuid4()), "last_update": None}
-        set_config(config)
 
     return config
 
@@ -35,6 +35,7 @@ def edit_config(name, value):
 
 
 CONFIG = get_config()
+
 
 class Timer:
     class Timer:
@@ -58,13 +59,12 @@ class Timer:
             ans = self.timers[timer_index].check()
             if ans[0] is True:
                 if ans[2] is True:
-                    #self.add(ans[3].secs, ans[3].func, ans[3].replay)
+                    # self.add(ans[3].secs, ans[3].func, ans[3].replay)
                     _.append(self.add(ans[3].secs, ans[3].func, ans[3].replay, ans=True))
 
             else:
                 _.append(self.timers[timer_index])
         self.timers = _.copy()
-
 
     def add(self, secs, func, replay: bool = True, ans=False):
         if ans is False:
@@ -75,27 +75,13 @@ class Timer:
 
 class Api:
     def __init__(self, path='/api'):
-        self.url_api = CONFIG['url'] + path
-        self.last_update = CONFIG['last_update']
-
-    def set_status(self, status, uuid):
-        requests.post(self.url_api + '/status/' + uuid, data={'status': status})
-
-    def _check_status(self, uuid):
-        ans = requests.get(self.url_api + '/check/' + uuid).json()
-        return ans
+        self.url_api = 'http://' + CONFIG['url'] + path
 
     def update(self, uuid):
         global CONFIG
-        last_hash = self._check_status(uuid)['hash']
-        if last_hash != self.last_update:
-            ans: dict = requests.get(self.url_api + '/config/' + uuid).json()
-            self.last_update = last_hash
+        ans: dict = requests.get(self.url_api + '/config/' + uuid).json()
 
-            CONFIG = edit_config('last_hash', last_hash)
-            return ans
-
-        return {}
+        return ans
 
 
 def gen_command_ffmpeg(uuid, video_size=(800, 600), fps=30, url='10.91.89.241', rtmp_port=1935, **kwargs):
@@ -109,13 +95,15 @@ def gen_command_ffmpeg(uuid, video_size=(800, 600), fps=30, url='10.91.89.241', 
     else:
         raise OSError
 
-    req = "ffmpeg -video_size {w}x{h} -framerate {fps} -f {t} -i {monitor} -c:v libx264 -preset ultrafast -f flv 'rtmp://{url}:{rtmp_port}/live/{uuid}'".format(
+    req = "ffmpeg -video_size {w}x{h} -framerate {fps} -f {t} -i {monitor} -c:v libx264 -preset ultrafast -tune zerolatency -f flv 'rtmp://{url}:{rtmp_port}/live/{uuid}'".format(
         w=video_size[0], h=video_size[1], fps=fps, t=t, monitor=monitor, url=url, rtmp_port=rtmp_port, uuid=uuid)
 
     return req
 
 
 def start_ffmpeg():
+    print('ffmpeg start')
+    _ = local_config.get('ffmpeg_proc', None)
     ffmpeg = gen_command_ffmpeg(**CONFIG)
     _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
     local_config['ffmpeg_proc'] = _
@@ -123,26 +111,34 @@ def start_ffmpeg():
 
 
 def stop_ffmpeg():
+    print('may_stop')
     _ = local_config.get('ffmpeg_proc', None)
     if _ is not None:
+        print(11111)
         try:
             _.kill()
         except:
             pass
+        local_config['ffmpeg_proc'] = None
 
 
 def eval_command(coms: dict):
     global CONFIG
+    print(coms)
     for key, value in coms.items():
-        if key == 'settings':
+        if key == 'setting':
             for key1, value1 in value.items():
                 if key1 in CONFIG:
                     CONFIG = edit_config(key1, value1)
 
         elif key == 'status':
             if value is True:
-                stop_ffmpeg()
-                start_ffmpeg()
+                print('start')
+                _ = local_config.get('ffmpeg_proc', None)
+                if _ is None:
+                    print('start 1')
+                    stop_ffmpeg()
+                    start_ffmpeg()
 
             elif value is False:
                 stop_ffmpeg()
@@ -152,20 +148,14 @@ def get_update(api: Api):
     eval_command(api.update(CONFIG['uuid']))
 
 
-# timers = Timer()
-# timers.add(3, lambda: print(1), True)
-# while True:
-#     timers.check()
-
 ffmpeg = gen_command_ffmpeg(**CONFIG)
 print(ffmpeg)
 
 api = Api()
-api.set_status(True, CONFIG['uuid'])
 timers = Timer()
-timers.add(15, eval_command, True)
+timers.add(20, lambda: get_update(api), True)
 while True:
     timers.check()
+
 # ans = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
-input()
 # ans.kill()
