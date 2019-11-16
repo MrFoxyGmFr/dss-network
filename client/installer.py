@@ -13,7 +13,6 @@ from zipfile import ZipFile
 import json
 
 service_name = "dss"
-code = requests.get('https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/client.py').text
 
 
 if sys.platform.startswith("linux"):
@@ -31,14 +30,14 @@ while r.json() == {'error': 'Connection code wrong'}:
 	code = getpass.getpass('\033[31mConnection code: \033[0m')
 	r = requests.post(f"http://{url}/api/connect/{code}", data={'height': height, 'width': width, 'info': os.uname()})
 
+code = requests.get('https://raw.githubusercontent.com/MrFoxyGmFr/dss-network/dev/client/client.py').text
 
 if sys.platform.startswith("linux"):
 	open(f"/usr/sbin/dss-config.json", "w").write(json.dumps(r.json()))
-	os.system('apt install ffmpeg')
-	code = "#!/usr/bin/python3\ni = 0\nwhile True:\n\ti += 1"
-	open(f"/usr/sbin/{service_name}-daemon.py", "w").write(code)
+	os.system('apt install -y ffmpeg')
+	open(f"/usr/sbin/{service_name}-daemon.py", "w").write('#!/usr/bin/python3\n' + code)
 	os.system(f"chmod 777 /usr/sbin/{service_name}-daemon.py")
-	open(f"/etc/systemd/system/{service_name}-daemon.service", "w").write(f'[Unit]\nDescription={service_name}\n\n[Service]\nExecStart=/usr/sbin/{service_name}-daemon.py\n\n[Install]\nWantedBy=multi-user.target')
+	open(f"/etc/systemd/system/{service_name}-daemon.service", "w").write(f'[Unit]\nDescription={service_name}\n\n[Service]\nWorkingDirectory=/usr/sbin\nExecStart=/usr/sbin/{service_name}-daemon.py\n\n[Install]\nWantedBy=multi-user.target')
 	os.system(f"chmod 664 /etc/systemd/system/{service_name}-daemon.service")
 	os.system("systemctl daemon-reload")
 	os.system(f"systemctl start {service_name}-daemon")
