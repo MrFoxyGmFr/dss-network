@@ -27,7 +27,11 @@ def get_config() -> dict:
 
 
 def edit_config(name, value):
+    global local_config
     conf = get_config()
+    if conf[name] != value:
+        print("TTTTTTTTTTTTTTTt", conf[name], value)
+        local_config['status'] = True
     conf[name] = value
     set_config(conf)
     return conf
@@ -102,15 +106,27 @@ def gen_command_ffmpeg(uuid, video_size=(800, 600), fps=30, url='10.91.89.241', 
 
 def start_ffmpeg():
     global CONFIG, local_config
-    if local_config['status'] is True:
+    # if local_config['status'] is True and local_config.get('ffmpeg_proc', None) is None:
+    #     print('ffmpeg start')
+    #     _ = local_config.get('ffmpeg_proc', None)
+    #     CONFIG = get_config()
+    #     ffmpeg = gen_command_ffmpeg(**CONFIG)
+    #     _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
+    #     print('pid:', _.pid)
+    #     local_config['ffmpeg_proc'] = _
+    #     return _
+    if local_config.get('ffmpeg_proc', None) is None:
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        print('AAAAAAAAAAA', local_config.get('ffmpeg_proc', None) is None)
         print('ffmpeg start')
         _ = local_config.get('ffmpeg_proc', None)
         CONFIG = get_config()
         ffmpeg = gen_command_ffmpeg(**CONFIG)
         _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
+        print('pid:', _.pid)
         local_config['ffmpeg_proc'] = _
+        print('VBBBBBBBBBBB', local_config.get('ffmpeg_proc', None) is None)
         return _
-
 
 def stop_ffmpeg():
     print('may_stop')
@@ -119,12 +135,17 @@ def stop_ffmpeg():
     if _ is not None:
         print(11111)
         try:
-            # subprocess.call(['kill '+str(_)], shell=True)
-            # print('kill')
-            _.terminate()
+            #_.kill()
+            _ = subprocess.run(['ps -a | grep ffmpeg | egrep "^ [0-9]{1,5}" -o'], shell=True, stdout=subprocess.PIPE)
+            _ = _.stdout.decode('utf-8').replace(' ', '').split('\n')
+            for i in _:
+                subprocess.call(['kill ' + i], shell=True)
+
         except Exception as E:
             print(E)
-        # local_config['ffmpeg_proc'] = None
+        else:
+
+            local_config['ffmpeg_proc'] = None
 
 
 def eval_command(coms: dict):
@@ -132,21 +153,22 @@ def eval_command(coms: dict):
     print(coms)
     for key, value in coms.items():
         if key == 'setting':
+            local_config['status'] = False
             for key1, value1 in value.items():
                 if key1 in CONFIG:
                     CONFIG = edit_config(key1, value1)
 
-            stop_ffmpeg()
-            start_ffmpeg()
+            if local_config['status'] is True:
+                stop_ffmpeg()
+                start_ffmpeg()
 
         elif key == 'status':
-            local_config['status'] = value
             if value is True:
                 print('start')
                 _ = local_config.get('ffmpeg_proc', None)
                 if _ is None:
                     print('start 1')
-                    stop_ffmpeg()
+                    # stop_ffmpeg()
                     local_config['ffmpeg_proc'] = start_ffmpeg()
 
             elif value is False:
@@ -162,8 +184,9 @@ print(ffmpeg)
 
 api = Api()
 timers = Timer()
-get_update(api)
-timers.add(20, lambda: get_update(api), True)
+
+get_config()
+timers.add(5, lambda: get_update(api), True)
 while True:
     try:
         timers.check()
