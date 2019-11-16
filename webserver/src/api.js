@@ -33,6 +33,10 @@ routes.post("/connect/:code", async (req, resp) => {
 routes.use("/config/:uuid", async (req, resp) => {
     let user = (await utils.allClients()).find(user => user.uuid === req.params.uuid);
 
+    if (user == null) {
+        return resp.json({ error: `user with uuid ${req.params.uuid} not found`});
+    }
+
     user.approved = Date.now();
     await utils.editClient(user.uuid, user);
 
