@@ -4,7 +4,6 @@ import sys
 import uuid
 import json
 import time
-from contextlib import contextmanager
 
 config_file_path = './dss-config.json'
 local_config = {}
@@ -102,28 +101,34 @@ def gen_command_ffmpeg(uuid, video_size=(800, 600), fps=30, url='10.91.89.241', 
 
 
 def start_ffmpeg():
-    print('ffmpeg start')
-    _ = local_config.get('ffmpeg_proc', None)
-    ffmpeg = gen_command_ffmpeg(**CONFIG)
-    _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
-    local_config['ffmpeg_proc'] = _
-    return _
+    global CONFIG, local_config
+    if local_config['status'] is True:
+        print('ffmpeg start')
+        _ = local_config.get('ffmpeg_proc', None)
+        CONFIG = get_config()
+        ffmpeg = gen_command_ffmpeg(**CONFIG)
+        _ = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
+        local_config['ffmpeg_proc'] = _
+        return _
 
 
 def stop_ffmpeg():
     print('may_stop')
     _ = local_config.get('ffmpeg_proc', None)
+    print(_)
     if _ is not None:
         print(11111)
         try:
-            _.kill()
-        except:
-            pass
-        local_config['ffmpeg_proc'] = None
+            # subprocess.call(['kill '+str(_)], shell=True)
+            # print('kill')
+            _.terminate()
+        except Exception as E:
+            print(E)
+        # local_config['ffmpeg_proc'] = None
 
 
 def eval_command(coms: dict):
-    global CONFIG
+    global CONFIG, local_config
     print(coms)
     for key, value in coms.items():
         if key == 'setting':
@@ -131,14 +136,18 @@ def eval_command(coms: dict):
                 if key1 in CONFIG:
                     CONFIG = edit_config(key1, value1)
 
+            stop_ffmpeg()
+            start_ffmpeg()
+
         elif key == 'status':
+            local_config['status'] = value
             if value is True:
                 print('start')
                 _ = local_config.get('ffmpeg_proc', None)
                 if _ is None:
                     print('start 1')
                     stop_ffmpeg()
-                    start_ffmpeg()
+                    local_config['ffmpeg_proc'] = start_ffmpeg()
 
             elif value is False:
                 stop_ffmpeg()
@@ -153,9 +162,13 @@ print(ffmpeg)
 
 api = Api()
 timers = Timer()
+get_update(api)
 timers.add(20, lambda: get_update(api), True)
 while True:
-    timers.check()
+    try:
+        timers.check()
+    except requests.exceptions.ConnectionError:
+        pass
 
 # ans = subprocess.Popen([ffmpeg], shell=True, stdout=subprocess.PIPE)
-# ans.kill()
+# ans.kill()lll
