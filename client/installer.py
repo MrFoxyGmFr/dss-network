@@ -34,7 +34,7 @@ while r.json() == {'error': 'Connection code wrong'}:
 
 if sys.platform.startswith("linux"):
 	open(f"/usr/sbin/dss-config.json", "w").write(json.dumps(r.json()))
-	os.system('apt install ffmpeg')
+	os.system('apt install -y ffmpeg')
 	code = "#!/usr/bin/python3\ni = 0\nwhile True:\n\ti += 1"
 	open(f"/usr/sbin/{service_name}-daemon.py", "w").write(code)
 	os.system(f"chmod 777 /usr/sbin/{service_name}-daemon.py")
